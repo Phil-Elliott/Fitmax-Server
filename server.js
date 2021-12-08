@@ -74,11 +74,11 @@ start with all of the runs from each user (link this to the sheet)
 delete runs when you press the x on bottomrightcorner (use if statements in /run)
 */
 
-app.get("/profile/:id", (req, res) => {
-  const { id } = req.params
+app.get("/profile/", (req, res) => {
+  const { email } = req.query
   db.select("*")
     .from("runs")
-    .where({ id })
+    .where({ email })
     .then((data) => {
       if (data.length) {
         res.json(data)
