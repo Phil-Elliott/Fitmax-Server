@@ -70,9 +70,18 @@ app.post("/register", (req, res) => {
   }).catch((err) => res.status(400).json("Unable to register"))
 })
 /*
-start with all of the runs from each user (link this to the sheet)
+  
 delete runs when you press the x on bottomrightcorner (use if statements in /run)
+figure out goals (should be simple and similar to runs)
 */
+
+app.delete("/delete/", (req, res) => {
+  const { id, email } = req.query
+  db("runs")
+    .where({ id })
+    .del()
+    .catch((err) => res.status(400).json("error deleting run"))
+})
 
 app.get("/profile/", (req, res) => {
   const { email } = req.query
