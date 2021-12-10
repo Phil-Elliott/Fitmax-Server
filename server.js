@@ -3,7 +3,6 @@ const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt-nodejs")
 const cors = require("cors")
 const knex = require("knex")
-const { CommandCompleteMessage } = require("pg-protocol/dist/messages")
 
 const db = knex({
   client: "postgres",
@@ -69,18 +68,16 @@ app.post("/register", (req, res) => {
       .catch(trx.rollback)
   }).catch((err) => res.status(400).json("Unable to register"))
 })
-/*
-  
-delete runs when you press the x on bottomrightcorner (use if statements in /run)
-figure out goals (should be simple and similar to runs)
-*/
 
 app.delete("/delete/", (req, res) => {
-  const { id, email } = req.query
+  const { id } = req.query
   db("runs")
     .where({ id })
     .del()
-    .catch((err) => res.status(400).json("error deleting run"))
+    .then((res) => {
+      res.json(id)
+    })
+    .catch((err) => res.status(404).json("error deleting run"))
 })
 
 app.get("/profile/", (req, res) => {
@@ -99,14 +96,14 @@ app.get("/profile/", (req, res) => {
 })
 
 app.put("/run", (req, res) => {
-  const { email, distancenumber, lengthnumber, id, joined } = req.body
+  const { email, distancenumber, lengthnumber, id, date } = req.body
   db("runs")
     .insert({
       email: email,
       id: id,
       distancenumber: distancenumber,
       lengthnumber: lengthnumber,
-      date: joined,
+      date: date,
     })
     .catch((err) => res.status(400).json("unable to add data"))
 })
@@ -114,3 +111,25 @@ app.put("/run", (req, res) => {
 app.listen(3001, () => {
   console.log("its running on port 3001")
 })
+
+/*
+  1) First entry ever doesnt show up 
+    - Seems like refresh isnt running for that 1st entry 
+    - maybe try learning more about promises 
+  2) Fix deletions 
+    - Only works for first 2 or 3 
+    - Have to double click sometimes
+    - try catching the error
+
+    - I think it is working but it stops updating 
+  3) Add goals 
+    - Make a goals table 
+      - email, distance, speed, calories 
+      - grab at the beginning 
+        - look into doing multiple fetches at once 
+  4) Clean up the code and put in some notes 
+
+
+
+  change onclick for daily to go back to main page and refresh runs which will cause the useEffect daily to get triggered
+*/
