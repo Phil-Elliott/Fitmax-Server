@@ -138,7 +138,7 @@ app.post("/goals", (req, res) => {
     })
 })
 
-app.get("/goals/", (req, res) => {
+app.get("/goalsData/", (req, res) => {
   const { email } = req.query
   db.select("*")
     .from("goals")
@@ -158,13 +158,15 @@ app.listen(3001, () => {
 })
 
 /*
-  3) Add goals 
-    - Make a goals table 
-      - email, distance, speed, calories 
-      - same as adding a run but you are going to alter the table 
-        - look into doing multiple fetches at once (promise all)
+  goals 
+  1) fetch goals when user logs in 
+      - same as runs (use useffect)
+  2) Update and add the information as the user submits 
+      - ame as runs (might have to change names)
 
-        can use an if statement in case they have one 
-        if they have an entry then alter, if not then create new
-  4) Clean up the code and put in some notes 
+
+      its crashing because its not rendering the distance data fast enough 
+      goals[0].distance means nothing 
+
+      maybe i can creat my own empty opject at first object 
 */
