@@ -70,8 +70,8 @@ app.post("/register", (req, res) => {
 })
 
 app.delete("/delete/", (req, res) => {
-  const { id } = req.query
-  db("runs")
+  const { sport, id } = req.query
+  db(sport)
     .where({ id })
     .del()
     .then((res) => {
@@ -81,9 +81,9 @@ app.delete("/delete/", (req, res) => {
 })
 
 app.get("/profile/", (req, res) => {
-  const { email } = req.query
+  const { email, sport } = req.query
   db.select("*")
-    .from("runs")
+    .from(sport)
     .where({ email })
     .then((data) => {
       if (data.length) {
@@ -96,8 +96,8 @@ app.get("/profile/", (req, res) => {
 })
 
 app.put("/run", (req, res) => {
-  const { email, distancenumber, lengthnumber, id, date } = req.body
-  db("runs")
+  const { sport, email, distancenumber, lengthnumber, id, date } = req.body
+  db(sport)
     .insert({
       email: email,
       id: id,
@@ -105,18 +105,19 @@ app.put("/run", (req, res) => {
       lengthnumber: lengthnumber,
       date: date,
     })
+    .then(res.json("added"))
     .catch((err) => res.status(400).json("unable to add data"))
 })
 
 app.post("/goals", (req, res) => {
-  const { email, distance, calories, time } = req.body
+  const { email, sport, distance, calories, time } = req.body
   db.select("*")
     .from("goals")
-    .where({ email })
+    .where({ email, sport })
     .then((data) => {
       if (data.length) {
         db("goals")
-          .where({ email })
+          .where({ email, sport })
           .update({
             distance: distance,
             calories: calories,
@@ -128,6 +129,7 @@ app.post("/goals", (req, res) => {
         db("goals")
           .insert({
             email: email,
+            sport: sport,
             distance: distance,
             calories: calories,
             speed: time,
@@ -139,10 +141,10 @@ app.post("/goals", (req, res) => {
 })
 
 app.get("/goalsData/", (req, res) => {
-  const { email } = req.query
+  const { email, sport } = req.query
   db.select("*")
     .from("goals")
-    .where({ email })
+    .where({ email, sport })
     .then((data) => {
       if (data.length) {
         res.json(data)
