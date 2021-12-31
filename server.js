@@ -14,7 +14,7 @@ const goalsData = require("./Controllers/GoalsData")
 const db = knex({
   client: "postgres",
   connection: {
-    host: "127.0.0.1",
+    host: "postgresql-asymmetrical-91866",
     user: "postgres",
     password: "1434",
     database: "fitmax",
