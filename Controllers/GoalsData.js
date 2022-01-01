@@ -7,7 +7,7 @@ const handleGoalsData = (req, res, db) => {
       if (data.length) {
         res.json(data)
       } else {
-        res.json([])
+        res.status(400).json("goals not found")
       }
     })
     .catch((err) => res.status(400).json("error getting goals"))
