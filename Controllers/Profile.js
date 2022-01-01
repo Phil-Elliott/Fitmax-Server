@@ -7,7 +7,7 @@ const handleProfile = (req, res, db) => {
       if (data.length) {
         res.json(data)
       } else {
-        res.status(400).json("not found")
+        res.json([])
       }
     })
     .catch((err) => res.status(400).json("error getting user"))
