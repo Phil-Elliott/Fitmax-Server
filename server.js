@@ -62,5 +62,5 @@ app.get("/goalsData/", (req, res) => {
 })
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log("its running on ${process.env.PORT}")
+  console.log(`its running on ${process.env.PORT}`)
 })
